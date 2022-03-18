@@ -3,7 +3,7 @@ import listEndpoints from "express-list-endpoints"
 import cors from "cors"
 import passport from "passport"
 
-// import usersRouter from "./services/users/index.js"
+import usersRouter from "./services/users/index.js"
 // import accomodationsRouter from "./accomodation/blogs/index.js"
 
 import {
@@ -55,7 +55,7 @@ server.use(
 
 server.use(express.json())
 server.use(passport.initialize())
-// server.use("/users", userssRouter)
+server.use("/user", usersRouter)
 // server.use("/accomodations", accomodationsRouter)
 // server.use("/files", filesRouter)
 console.table(listEndpoints(server))
