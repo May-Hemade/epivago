@@ -4,8 +4,21 @@ import { authenticateUser } from "../../auth/tools.js"
 
 import createHttpError from "http-errors"
 import { JWTAuthMiddleware } from "../../auth/token.js"
+import { HostonlyMiddleware } from "../../auth/HostMiddleware.js"
+import passport from "passport"
 
 const usersRouter = express.Router()
+
+usersRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
+  try {
+    console.log(req.body)
+    const newUser = await UserModel.find()
+    res.status(201).send(newUser)
+  } catch (error) {
+    next(error)
+  }
+})
+
 
 usersRouter.post("/register", async (req, res, next) => {
   try {
@@ -51,19 +64,39 @@ usersRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
   }
 })
 
-// usersRouter.get(
-//   "/me/accomodation",
-//   JWTAuthMiddleware,
-//   async (req, res, next) => {
-//     try {
-//       const user = req.user
-//       const accomodation = await AccomodatioModel.find({ users: user._id })
-//       res.send(accomodation)
-//     } catch (error) {
-//       next(error)
-//     }
-//   }
-// )
+
+usersRouter.get("/googleLogin",passport.authenticate("google", { scope: ["email", "profile"] })) 
+
+usersRouter.get(
+  "/googleRedirect",
+  passport.authenticate("google"),
+  async (req, res, next) => {
+    try {
+      console.log("TOKENS: ", req.user.token)
+      
+      res.redirect(
+        `${process.env.FE_URL}?accessToken=${req.user.token}`
+      )
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+
+usersRouter.get(
+  "/me/accomodation",
+  JWTAuthMiddleware, HostonlyMiddleware,
+  async (req, res, next) => {
+    try {
+      const user = req.user
+      const accomodation = await UserModel.find({ users: user._id })
+      res.send(accomodation)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
 
 usersRouter.delete("/:userId", JWTAuthMiddleware, async (req, res, next) => {
   try {
