@@ -7,10 +7,10 @@ const accomodationSchema = new Schema(
     maxGuests: { type: Number, required: true },
     description: { type: String, required: true },
     city: { type: String, required: true },
-    host: { type: Schema.Types.ObjectId, required: true, ref: "Users" },
+    host: { type: Schema.Types.ObjectId, ref: "Users" },
   },
   {
     timestamps: true,
   }
 );
-export default model("accomandation", accomodationSchema);
+export default model("accomodation", accomodationSchema);
