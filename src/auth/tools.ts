@@ -19,10 +19,10 @@ const generateJWTToken = (payload:{_id:string, role:string}) =>
     )
   )
 
-export const verifyJWTToken = (token:string) =>
+export const verifyJWTToken = (token:string): Promise<IPayload> =>
   new Promise((res, rej) =>
     jwt.verify(token, process.env.JWT_SECRET!, (err, payload) => {
       if (err) rej(err)
-      else res(payload)
+      else res(payload as IPayload)
     })
   )
