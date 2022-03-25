@@ -1,52 +1,50 @@
-// import passport from "passport"
-// import GoogleStrategy  from "passport-google-oauth20"
-// import userSchema from "../services/users/schema.js"
-// import { UserProfile } from "../types.js"
-// import { authenticateUser } from "./tools.js"
-// const googleStrategy = new GoogleStrategy({
-//     clientID: process.env.GOOGLE_ID,
-//     clientSecret: process.env.GOOGLE_SECRET,
-//     callbackURL: `${process.env.API_URL}/user/googleRedirect`
-// },
-// async (accessToken:string ,refresh:string,  profile:UserProfile, passportNext:(error: any, user?: any, info?: any) => void ) => {
-//     try {
-     
-//       console.log(profile)
+import passport from "passport"
+import { Strategy } from "passport-google-oauth20"
+import userSchema from "../services/users/schema.js"
+import { UserProfile } from "../types.js"
+import { authenticateUser } from "./tools.js"
 
-//       if(profile.emails && profile.emails.length > 0 ) {
-//         const user = await userSchema.findOne({ email: profile.emails[0] })
+const googleStrategy = new Strategy({
+  clientID: process.env.GOOGLE_ID || "",
+  clientSecret: process.env.GOOGLE_SECRET || "",
+  callbackURL: `${process.env.API_URL}/user/googleRedirect`,
+  passReqToCallback: true
+},
+  async function (request, accessToken, refresh, profile, done) {
+    try {
+      console.log(profile)
 
-//       if (user) {
-//         const token = await authenticateUser(user)
-//         passportNext(null, { token, role: user.role })
-//       } else {
-//         // 4. Else if the user is not in our db --> add the user to db and then create token(s) for him/her
+      if (profile.emails && profile.emails.length > 0) {
+        const user = await userSchema.findOne({ email: profile.emails[0] })
 
-//         const newUser = new userSchema({
-//           name: profile.name,
-//           surname: profile.familyName,
-//           email: profile.emails[0],
-//           googleId: profile.googleUserId,
-//         })
+        if (user) {
+          const token = await authenticateUser(user)
+          done(null, { token, role: user.role })
+        } else {
+          // 4. Else if the user is not in our db --> add the user to db and then create token(s) for him/her
 
-//         const savedUser = await newUser.save()
-//         const token = await authenticateUser(savedUser)
+          const newUser = new userSchema({
+            name: profile.name?.givenName,
+            surname: profile.name?.familyName,
+            email: profile.emails[0],
+            googleId: profile.id,
+          })
 
-//         passportNext(null, { token })
-//       }
-//       }
+          const savedUser = await newUser.save()
+          const token = await authenticateUser(savedUser)
 
-
-      
-//     } catch (error) {
-//       passportNext(error)
-//     }
-//   }
-// )
+          done(null, { token })
+        }
+      }
+    } catch (error: any) {
+      done(error)
+    }
+  }
+)
 
 
-// passport.serializeUser((data, passportNext) => {
-//   passportNext(null, data)
-// })
+passport.serializeUser((data, done) => {
+  done(null, data)
+})
 
 // export default googleStrategy
