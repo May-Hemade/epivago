@@ -29,6 +29,7 @@ describe("Testing the endpoints", () => {
   const UserRegistration = {
     email: "ali@gmail.com",
     password: "1234",
+    role:"host"
   };
   let userId:string;
   it("should register the Users with /register endpoint!", async () => {
@@ -41,8 +42,11 @@ describe("Testing the endpoints", () => {
   let logInToken = '';
   it("should log the Users with /login endpoint!", async () => {
     const response = await client.post("/user/login").send(UserRegistration);
+    logInToken = response.body.accessToken
+  
+    
+
     expect(response.status).toBe(201);
-    // logInToken = response.body.Data.token
   });
 
 
@@ -60,10 +64,11 @@ describe("Testing the endpoints", () => {
 
 
 
-//   it("should get /user/me/accomadation endpoint!", async () => {
-//     const response = await client.get("/user/me/accomodation").set('Authorization', `Bearer + ${logInToken}`);;
-//     expect(response.status).toBe(200);
-//   });
+  it("should get /user/me/accomadation endpoint!", async () => {
+      console.log([logInToken])
+    const response = await client.get("/user/me/accomodation").set('Authorization',`Bearer ${logInToken}`);
+    expect(response.status).toBe(200);
+  });
 
 
 
