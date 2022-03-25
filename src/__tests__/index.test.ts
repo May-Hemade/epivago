@@ -38,4 +38,7 @@ describe("Testing the endpoints", () => {
     const response = await client.post("/user/login").send(UserRegistration);
     expect(response.status).toBe(201);
   });
+
+
+  
 });
