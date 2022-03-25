@@ -1,33 +1,41 @@
-import {server} from '../server'
-import supertest from 'supertest'
-import mongoose from "mongoose"
-import dotenv from "dotenv"
+import { server } from "../server";
+import supertest from "supertest";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-const client = supertest(server)
+const client = supertest(server);
 
-describe("Testing the endpoints", ()=> {
-    beforeAll(done => {
-        mongoose.connect(process.env.MONGO_URL_TEST!)
-            .then(() => {
-                console.log("Connected to Mongo DB in test...")
-                done()
-            })
-    })
+describe("Testing the endpoints", () => {
+  beforeAll((done) => {
+    mongoose.connect(process.env.MONGO_URL_TEST!).then(() => {
+      console.log("Connected to Mongo DB in test...");
+      done();
+    });
+  });
 
+  afterAll((done) => {
+    mongoose.connection.close().then(() => {
+      done();
+    });
+  });
+  it("should work", () => {
+    expect(true).toBe(true);
+  });
 
-it("should get Users with /users endpoint!", async()=> {
-    const response = await client.get("/users")
-    expect(response.status).toBe(200)
-})
+  const UserRegistration = {
+    email: "ali@gmail.com",
+    password: "1234",
+  };
 
-    afterAll(done => {
-        mongoose.connection.dropDatabase().then(() => {
-            return mongoose.connection.close()
-        }).then(() => {
-            console.log("Dropped database and closed connection")
-            done()
-        })
-    })
-})
+  it("should register the Users with /register endpoint!", async () => {
+    const response = await client.post("/user/register").send(UserRegistration);
+    expect(response.status).toBe(201);
+  });
+
+  it("should log the Users with /login endpoint!", async () => {
+    const response = await client.post("/user/login").send(UserRegistration);
+    expect(response.status).toBe(201);
+  });
+});

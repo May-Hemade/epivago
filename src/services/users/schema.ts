@@ -12,9 +12,9 @@ interface UserModel extends Model<IUser> {
 
 const UserSchema = new Schema<IUser, UserModel>(
   {
-    name: { type: String, required: true },
-    avatar: {type:String, required: true},
-    email: { type: String, required: true },
+    name: { type: String },
+    avatar: {type:String},
+    email: { type: String },
     password: { type: String },
     role: { type: String, enum: [ROLE_GUEST, ROLE_HOST], default: ROLE_GUEST },
   },

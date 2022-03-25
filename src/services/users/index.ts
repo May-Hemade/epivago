@@ -25,9 +25,13 @@ usersRouter.get("/", JWTAuthMiddleware, async (req, res, next) => {
 usersRouter.post("/register", async (req, res, next) => {
   try {
     console.log(req.body)
-    const newUser = new User(req.body)
-    const { _id } = await newUser.save()
-    res.status(201).send({ _id })
+    const user = new User(req.body)
+    const newUser = await user.save()
+    if(newUser){
+      res.status(201).send(newUser)
+    }else{
+      res.status(400).send({message:"something bad happened!"})
+    }
   } catch (error) {
     next(error)
   }
