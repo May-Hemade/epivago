@@ -21,7 +21,7 @@ interface Response {
 }
 
 interface IPayload {
-    _id:number,
+    _id:string,
     role:string
 }
 

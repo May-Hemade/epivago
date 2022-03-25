@@ -1,8 +1,10 @@
 import createHttpError from "http-errors"
 import  atob  from "atob"
-import userSchema from "../services/users/schema.js"
-export const MainAuthMiddleware = async (req, res, next) => {
+import userSchema from "../services/users/schema"
+import { NextFunction, Request, Response } from "express"
 
+export const MainAuthMiddleware = async ( req:Request, res:Response, next:NextFunction) => {
+    
 //1 First I have to check AUTHORIZATION if it is not in the place ----> trigger error
 if(!req.headers.authorization){
     next(createHttpError(401, "Please provide your credentials in the header"))
@@ -13,10 +15,10 @@ if(!req.headers.authorization){
 
     // 3 having obtained the credential I have to check in db by (email) , and also compare recived password with hashed one
 
-    const author = await userSchema.checkCredentials(email, password)
-    if (author) {
+    const user = await userSchema.checkCredentials(email, password)
+    if (user) {
         // 4. If credentials are ok, we can proceed to what is next (another middleware or route handler)
-        req.author = author
+        req.user = user
         next()
       } else{
            // 5. If credentials are NOT ok (email not found OR password not correct) --> trigger an error (401)

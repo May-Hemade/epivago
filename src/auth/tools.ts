@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import { IPayload, IUser } from "../types"
 
 export const authenticateUser = async (user:IUser) => {
   // given the user returns a token for him/her
