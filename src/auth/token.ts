@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction} from 'express'
 import createHttpError from "http-errors";
 import createError from "http-errors";
-import { verifyJWTToken } from "./tools.js";
+import { verifyJWTToken } from "./tools";
 
 export const JWTAuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.headers.authorization) {

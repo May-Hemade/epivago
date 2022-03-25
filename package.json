@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "jest",
-    "watch": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --watchAll",
+    "watch": "jest --watchAll",
     "start": "node ./build",
-    "dev": "ts-node-dev  ./src/server.ts",
-    "hello": "say hello"
+    "dev": "ts-node-dev src",
+    "hello": "say hello",
+    "build": "npx tsc"
   },
   "repository": {
     "type": "git",
@@ -56,6 +56,7 @@
     "@types/jest": "^27.4.1",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/passport": "^1.0.7",
+    "@types/supertest": "^2.0.12",
     "cross-env": "^7.0.3",
     "dotenv": "^15.0.0",
     "jest": "^27.5.1",

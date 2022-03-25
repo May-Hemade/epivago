@@ -43,15 +43,5 @@ server.use(forbiddenHandler)
 server.use(catchAllHandler)
 
 
-if(!process.env.MONGO_CONNECTION){
-  throw Error("Url is undefined!")
-}
-mongoose.connect(process.env.MONGO_CONNECTION)
 
-mongoose.connection.on("connected", () => {
-  console.log("Successfully connected to Mongo!")
-  server.listen(port, () => {
-    console.table(listEndpoints(server))
-    console.log("Server runnning on port: ", port)
-  })
-})
+ export {server}
