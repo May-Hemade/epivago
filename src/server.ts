@@ -13,6 +13,7 @@ import {
   catchAllHandler,
 } from "./errorHandlers.js"
 import mongoose from "mongoose"
+import accomodationsRouter from "./services/accomodation"
 
 const server = express()
 
@@ -28,6 +29,7 @@ server.use(passport.initialize())
 /************************************** Enpoints **************************/
 
 server.use("/user", usersRouter );
+server.use("/accomadation", accomodationsRouter );
 
 
 

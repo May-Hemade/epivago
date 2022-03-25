@@ -16,7 +16,9 @@ accomodationsRouter.post("/", async (req, res, next) => {
 accomodationsRouter.get("/", async (req, res, next) => {
   try {
     const accomodations = await AccomodationsModel.find();
-    res.send(accomodations);
+    if(accomodations){
+      res.status(200).send(accomodations);
+    }
   } catch (error) {
     next(error);
   }

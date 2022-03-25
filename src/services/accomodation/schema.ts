@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IAccomodation } from "../../types";
 
 const { Schema, model } = mongoose;
 const accomodationSchema = new Schema<IAccomodation>(
