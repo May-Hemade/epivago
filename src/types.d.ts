@@ -25,8 +25,14 @@ interface IPayload {
     role:string
 }
 
+interface ReqUser {
+    _id:string,
+    role:string,
+    token: string
+}
+
 interface IRequest extends Request {
-    user: IPayload
+    user: ReqUser
 }
 
 interface IAccomodation {

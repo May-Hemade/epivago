@@ -78,12 +78,14 @@ usersRouter.get("/googleLogin",passport.authenticate("google", { scope: ["email"
 usersRouter.get(
   "/googleRedirect",
   passport.authenticate("google"),
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log("TOKENS: ", req.user.token)
+      const request = req as IRequest
+
+      console.log("TOKENS: ", request.user.token)
       
       res.redirect(
-        `${process.env.FE_URL}?accessToken=${req.user.token}`
+        `${process.env.FE_URL}?accessToken=${request.user.token}`
       )
     } catch (error) {
       next(error)
@@ -95,9 +97,10 @@ usersRouter.get(
 usersRouter.get(
   "/me/accomodation",
   JWTAuthMiddleware, HostonlyMiddleware,
-  async (req, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = req.user
+      const request = req as IRequest
+      const user = request.user
       const accomodation = await User.find({ users: user._id })
       res.send(accomodation)
     } catch (error) {
@@ -106,10 +109,11 @@ usersRouter.get(
   }
 )
 
-usersRouter.delete("/:userId", JWTAuthMiddleware, async (req, res, next) => {
+usersRouter.delete("/:userId", JWTAuthMiddleware, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = req.params.userId
-    if (userId === req.user._id) {
+    const request = req as IRequest
+    const userId = request.params.userId
+    if (userId === request.user._id) {
       const deleteUser = await User.findByIdAndDelete(userId)
       if (deleteUser) {
         res.status(204).send()
