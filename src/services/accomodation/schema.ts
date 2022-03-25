@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
-const accomodationSchema = new Schema(
+const accomodationSchema = new Schema<IAccomodation>(
   {
     name: { type: String, required: true },
     maxGuests: { type: Number, required: true },

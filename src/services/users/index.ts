@@ -34,7 +34,7 @@ usersRouter.post("/register", async (req, res, next) => {
 usersRouter.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body
-    const user = await UserModel.checkCredentials(email, password)
+    const user:IUser = await UserModel.checkCredentials(email, password)
     if (user) {
       const accessToken = await authenticateUser(user)
       res.status(201).send({ accessToken })

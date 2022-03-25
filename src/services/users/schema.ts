@@ -7,10 +7,10 @@ const { Schema, model } = mongoose
 export const ROLE_HOST = "host"
 export const ROLE_GUEST = "guest"
 
-const UserSchema = new Schema(
+const UserSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
-    avatar: String,
+    avatar: {type:String, required: true},
     email: { type: String, required: true },
     password: { type: String },
     role: { type: String, enum: [ROLE_GUEST, ROLE_HOST], default: ROLE_GUEST },

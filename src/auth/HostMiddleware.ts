@@ -1,6 +1,7 @@
+import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 
-export const HostonlyMiddleware = (req, res, next) => {
+export const HostonlyMiddleware:RequestHandler = (req, res, next) => {
   if (req.user.role === "host") {
     next()
   }else{

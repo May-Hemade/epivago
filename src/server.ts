@@ -1,8 +1,8 @@
 import express from "express"
 import listEndpoints from "express-list-endpoints"
 import cors from "cors"
-import usersRouter from "../src/services/users/index.js"
-import googleStrategy from "./auth/oauth.js"
+import usersRouter from "../src/services/users/index"
+import googleStrategy from "./auth/oauth"
 import passport from "passport"
 import {
   badRequestHandler,
@@ -42,6 +42,10 @@ server.use(genericErrorHandler)
 server.use(forbiddenHandler)
 server.use(catchAllHandler)
 
+
+if(!process.env.MONGO_CONNECTION){
+  throw Error("Url is undefined!")
+}
 mongoose.connect(process.env.MONGO_CONNECTION)
 
 mongoose.connection.on("connected", () => {

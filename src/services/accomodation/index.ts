@@ -46,7 +46,7 @@ accomodationsRouter.get("/:accomodationId", async (req, res, next) => {
   }
 });
 
-accomodationsRouter.put("/:accomandationId", async (req, res, next) => {
+accomodationsRouter.put("/:accomodationId", async (req, res, next) => {
   try {
     const accomodationId = req.params.accomodationId;
     const updatedAccomodation = await AccomodationsModel.findByIdAndUpdate(
