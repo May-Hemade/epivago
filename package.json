@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/May-Hemade/epivago#readme",
   "dependencies": {
+    "@types/passport-google-oauth20": "^2.0.11",
     "atob": "^2.1.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
