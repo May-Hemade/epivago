@@ -1,6 +1,6 @@
 import express from "express";
 import createHttpError from "http-errors";
-import AccomodationsModel from "./schema.js";
+import AccomodationsModel from "./schema";
 
 const accomodationsRouter = express.Router();
 

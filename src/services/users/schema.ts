@@ -1,13 +1,16 @@
-import mongoose from "mongoose"
-
 import bcrypt from "bcrypt"
 
-const { Schema, model } = mongoose
+import { Model, Schema, model } from 'mongoose';
+import { IUser } from "../../types";
 
 export const ROLE_HOST = "host"
 export const ROLE_GUEST = "guest"
 
-const UserSchema = new Schema<IUser>(
+interface UserModel extends Model<IUser> {
+  checkCredentials(email: string, plainPW: string): Promise<IUser | null> ;
+}
+
+const UserSchema = new Schema<IUser, UserModel>(
   {
     name: { type: String, required: true },
     avatar: {type:String, required: true},
@@ -42,7 +45,7 @@ UserSchema.methods.toJSON = function () {
   return userObject
 }
 
-UserSchema.statics.checkCredentials = async function (email, plainPW) {
+UserSchema.statics.checkCredentials = async function (email: string, plainPW: string) : Promise<IUser | null> {
   const user = await this.findOne({ email })
   if (user) {
     const isMatch = await bcrypt.compare(plainPW, user.password)
@@ -57,4 +60,6 @@ UserSchema.statics.checkCredentials = async function (email, plainPW) {
   }
 }
 
-export default model("User", UserSchema)
+const User = model<IUser, UserModel>('User', UserSchema);
+
+export default User

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express"
+import { Error } from "./types"
 
 export const badRequestHandler = (err:Error, req:Request, res:Response, next:NextFunction) => {
   if (err.status === 400) {

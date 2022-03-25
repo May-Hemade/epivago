@@ -1,3 +1,5 @@
+import { Request} from 'express'
+
 interface IUser {
     name: string
     avatar: string,
@@ -10,21 +12,21 @@ interface IUser {
 
 interface Error {
     status: number,
+    message: string,
     errorsList:string
-}
-
-interface Request {
-    status: number
 }
 
 interface Response {
     status: number | string
 }
 
-
 interface IPayload {
     _id:number,
     role:string
+}
+
+interface IRequest extends Request {
+    user: IPayload
 }
 
 interface IAccomodation {
